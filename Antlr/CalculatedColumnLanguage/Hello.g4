@@ -1,16 +1,5 @@
 grammar Hello;
 
-/* root     : if_fn | rank_fn;
-
-VARIABLE : '${'[a-zA-Z0-9_ ]+'}';
-WS       : [ \t\r\n]+ -> skip;
-
-if_fn : 'IF(' VARIABLE  ',' VARIABLE ',' VARIABLE ')';
-rank_fn : 'RANK(' (VARIABLE | if_fn) ',' VARIABLE ',' VARIABLE ')'; */
-
-
-
-/* VARIABLE : [a-zA-Z_]+ ; */
 VARIABLE : '${'[a-zA-Z0-9_ ]+'}';
 NUMBER   : [0-9.]+ ;
 WS : [ \t\r\n]+ -> skip ;
@@ -29,12 +18,13 @@ GT     : '>' ;
 LTE    : '<=';
 GTE    : '>=';
 
-ORDER  : 'ASC' | 'DESC' | 'null' | 'Null' | 'NULL' ;
+NULL   : 'null'| 'Null' | 'NULL' ;
+ORDER  : 'ASC' | 'DESC' | NULL ;
 
 variable : VARIABLE | NUMBER;
 
 equation
-  : (expression | variable) relop (expression | variable) ;
+  : (variable | expression) relop (variable | expression) ;
 
 expression
   : multiplyingExpression ((PLUS | MINUS) multiplyingExpression)* ;
@@ -52,7 +42,7 @@ signedAtom
   | atom ;
 
 atom
-  : VARIABLE
+  : variable
   | LPAREN expression RPAREN ;
 
 relop
@@ -66,7 +56,7 @@ if_fn
   : 'IF' LPAREN (equation | variable) ',' (equation | variable) ',' (equation | variable) RPAREN ;
 
 rank_fn
-  : 'RANK' LPAREN VARIABLE ',' VARIABLE ',' ORDER RPAREN ;
+  : 'RANK' LPAREN VARIABLE ',' (VARIABLE | NULL) ',' (ORDER | NULL) RPAREN ;
 
 func
   : if_fn
