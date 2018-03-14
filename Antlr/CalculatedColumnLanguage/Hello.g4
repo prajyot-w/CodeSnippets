@@ -63,4 +63,4 @@ func
   : if_fn
   | rank_fn ;
 
-root: equation | expression |  func ;
+root: equation | expression | func ;
