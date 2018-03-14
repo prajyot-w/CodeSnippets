@@ -1,7 +1,8 @@
 grammar Hello;
 
-VARIABLE : '${'[a-zA-Z0-9_ ]+'}';
+VARIABLE : '${'[-a-zA-Z0-9_ ]+'}';
 NUMBER   : [0-9.]+ ;
+TEXT     : '\''[a-zA-Z0-9 ]+'\'';
 WS : [ \t\r\n]+ -> skip ;
 
 PLUS   : '+' ;
@@ -19,9 +20,9 @@ LTE    : '<=';
 GTE    : '>=';
 
 NULL   : 'null'| 'Null' | 'NULL' ;
-ORDER  : 'ASC' | 'DESC' | NULL ;
+ORDER  : 'ASC' | 'DESC' | 'desc' | NULL ;
 
-variable : VARIABLE | NUMBER;
+variable : VARIABLE | NUMBER | TEXT;
 
 equation
   : (variable | expression) relop (variable | expression) ;
@@ -62,4 +63,4 @@ func
   : if_fn
   | rank_fn ;
 
-root: equation | func ;
+root: equation | expression |  func ;
