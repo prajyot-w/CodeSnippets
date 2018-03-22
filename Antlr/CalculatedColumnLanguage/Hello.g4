@@ -54,13 +54,17 @@ relop
   | GTE ;
 
 if_fn
-  : 'IF' LPAREN (equation | variable) ',' (equation | variable) ',' (equation | variable) RPAREN ;
+  : 'IF' LPAREN (equation | variable | func) ',' (equation | variable | func) ',' (equation | variable | func) RPAREN ;
 
 rank_fn
   : 'RANK' LPAREN VARIABLE ',' (VARIABLE | NULL) ',' (ORDER | NULL) RPAREN ;
 
+percentile_fn
+  : 'PERCENTILE' LPAREN variable ',' variable RPAREN ;
+
 func
   : if_fn
-  | rank_fn ;
+  | rank_fn
+  | percentile_fn;
 
 root: equation | expression | func ;
